@@ -36,20 +36,20 @@ public class Osap extends HttpServlet {
 		// task 7 (p-2), to respond to the client with a message  
 		response.setContentType("text/plain");
 		Writer resOut = response.getWriter();
-		resOut.write("\n");										// optional for new line 
+		resOut.write("\n");														// optional for new line 
 		resOut.write("Hello, World!\n");
 		
-		String clientIP = request.getRemoteAddr();				// client IP
+		String clientIP = request.getRemoteAddr();								// client IP
 		resOut.write("Client IP: " + clientIP + "\n");
 		
-		int cPort = request.getLocalPort();						// client port   or  request.getServerPort();[check this one as well]
+		int cPort = request.getLocalPort();										// client port   or  request.getServerPort();[check this one as well]
 		resOut.write("Client Port: " + cPort + "\n");
 		resOut.write("This IP has been flagged!\n");
 		
-		String cProtocol = request.getProtocol();		    	// protocol 
+		String cProtocol = request.getProtocol();		    					// protocol 
 		resOut.write("Client Protocol: " + cProtocol + "\n");
 		
-		String cMethod = request.getMethod();					// method 
+		String cMethod = request.getMethod();									// method 
 		resOut.write("Client Method: " + cMethod + "\n");
 		
 		
@@ -58,6 +58,7 @@ public class Osap extends HttpServlet {
 		resOut.write("Query String: " + clientQueryString + "\n");  			// [check this part
 		resOut.write("Query Param foo= " + foo + "\n");
 		
+//		check this part if its needed 
 		String uri = request.getRequestURI().toString(); 						// URI 
 		resOut.write("Request URI: " + uri + "\n");
 		
@@ -88,14 +89,14 @@ public class Osap extends HttpServlet {
 		} else {
 			 sPrincipal = Double.parseDouble(request.getParameter("principal"));
 			 sPeriod = Double.parseDouble(request.getParameter("period"));
-			 dInterest = Double.parseDouble(request.getParameter("interest"));
-//			resOut.write("Principal= " + principal + "\n");     
+			 dInterest = Double.parseDouble(request.getParameter("interest"));     
 		}
 
-		String contextPath = context.getContextPath();					// context path 
+//		check this part if its needed 
+		String contextPath = context.getContextPath();								// context path 
 		resOut.write("Context Path= " + contextPath + "\n");
 		
-		String realPath = context.getRealPath("Osap");				   // real path
+		String realPath = context.getRealPath("Osap");				  				// real path
 		resOut.write("Real Path= " + realPath + "\n");
 		
 
