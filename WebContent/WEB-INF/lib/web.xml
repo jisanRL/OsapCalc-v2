@@ -43,6 +43,11 @@
 		<param-name>fixed interest</param-name>
 		<param-value>5</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>grace period</param-name>
+		<param-value>6</param-value>
+	</context-param>
 
 	<error-page>
 		<error-code>404</error-code>

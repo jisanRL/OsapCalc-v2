@@ -79,12 +79,13 @@ public class Osap extends HttpServlet {
 		double default_principal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));  // this reads the web.xml file and returns the parameter value of the param-name
 		double default_interest = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
 		double default_period =  Double.parseDouble(this.getServletContext().getInitParameter("period"));
+		double default_gracePeriod =  Double.parseDouble(this.getServletContext().getInitParameter("grace period"));
 		
 		// task B: servlet retrieving data from the form, [user input the values]
 		double principal = Double.parseDouble(request.getParameter("principal"));
 		double interest = Double.parseDouble(request.getParameter("interest"));				
 		double period =  Double.parseDouble(request.getParameter("period")); 			// grace period 
-		
+		double gracePeriod = period;
 		
 		// this prevents the page to change and go to the lab1 content, instead it delivers the results in the defalut UI page!
 		String target =  "/UI.jspx";												// this sets the path to UI.jspx instead of Osap.java
@@ -99,16 +100,17 @@ public class Osap extends HttpServlet {
 		}
 		
 		
-		double sPrincipal, sPeriod, dInterest;
+		double sPrincipal, sPeriod, dInterest, grace;
 		double fixedInterest = Double.parseDouble(this.getServletContext().getInitParameter("fixed interest"));;  // fixed interest 
 		double overallInterest = fixedInterest + interest; 
+		
+		double graceInterest = (principal * ((interest + fixedInterest) / 12) * gracePeriod) / 100;				// check this out 
 		
 		// input from query String [these are the user input values]
 		if (request.getParameterMap().isEmpty()) {
 			 sPrincipal = default_principal;    				//  Double.parseDouble(context.getInitParameter("principal"));	// the default values 
 			 sPeriod = default_period; 							//  Double.parseDouble(context.getInitParameter("period"));
 			 dInterest = fixedInterest + default_interest;		//  Double.parseDouble(context.getInitParameter("interest"));
-			 
 		} else {
 			 sPrincipal = principal;							// the user values
 			 sPeriod = period;
@@ -130,7 +132,8 @@ public class Osap extends HttpServlet {
 		
 		
 		// the formula for osap calculation 
-		double calc = (((dInterest/100) / 12) * sPrincipal) / (1 - Math.pow(1 + ((dInterest/100) / 12), -sPeriod));  
+		double calc = (((dInterest/100) / 12) * sPrincipal) / (1 - Math.pow(1 + ((dInterest/100) / 12), -sPeriod));
+		double finalCalc = calc + (graceInterest/gracePeriod);
 		resOut.write("Monthly payments: " + calc);
 
 		
@@ -146,16 +149,17 @@ public class Osap extends HttpServlet {
 		System.out.println("principal " + principal);
 		System.out.println("period " + period);
 		System.out.println("interest " + interest);
-		System.out.println("calc: " + calc);
+		System.out.println("------------------------------------------");
+		System.out.println("Grace Period = " + gracePeriod);
+		System.out.println("Grace Interest =  " + graceInterest);
+		System.out.println("Grace Interest =  " + default_gracePeriod);
 		System.out.println("------------------------------------------");
 		System.out.println("target and request = " + request);
 		System.out.println("Fixed interst = " + fixedInterest);
 		System.out.println("Overall interest = " + overallInterest);
 		System.out.println("------------------------------------------");
-//		System.out.println("sprincipal = " + sPrincipal);
-//		System.out.println("speriod = " + sPeriod);
-//		System.out.println("dinterest = " + dInterest);
-//		System.out.println("calc = " + calc);
+		System.out.println("Final calc: " + finalCalc);
+		System.out.println("------------------------------------------");
 		
 		System.out.println("Hello, Got a GET request from Osap!");    // task7
 	}
