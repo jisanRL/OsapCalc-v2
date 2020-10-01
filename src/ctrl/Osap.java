@@ -76,9 +76,19 @@ public class Osap extends HttpServlet {
 		resOut.write("Applicant Name= " + applicant + "\n");
 		
 		// input from web.xml [this are the built-in/hard-coded values]
-		double principal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));  // this reads the web.xml file and returns the parameter value of the param-name
-		double interest = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
-		double period =  Double.parseDouble(this.getServletContext().getInitParameter("period"));
+//		double principal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));  // this reads the web.xml file and returns the parameter value of the param-name
+//		double interest = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
+//		double period =  Double.parseDouble(this.getServletContext().getInitParameter("period"));
+		
+		// task B: servlet retrieving data from the form, [user input the value]
+		double principal = Double.parseDouble(request.getParameter("principal"));
+		double interest = Double.parseDouble(request.getParameter("interest"));
+		double period =  Double.parseDouble(request.getParameter("period")); 			// grace period 
+		
+		// this prevents the page to change and go to the lab1 content, instead it delivers the results in the defalut UI page!
+		String target =  "/UI.jspx";
+		request.getRequestDispatcher(target).forward(request, response);
+		
 		
 		double sPrincipal, sPeriod, dInterest;
 		// input from query String [these are the user input values]
@@ -120,11 +130,12 @@ public class Osap extends HttpServlet {
 		System.out.println("period " + period);
 		System.out.println("interest " + interest);
 		System.out.println("calc: " + calc);
+		System.out.println("target and request = " + target + request);
 		System.out.println("------------------------------------------");
-		System.out.println("sprincipal = " + sPrincipal);
-		System.out.println("speriod = " + sPeriod);
-		System.out.println("dinterest = " + dInterest);
-		System.out.println("calc = " + calc);
+//		System.out.println("sprincipal = " + sPrincipal);
+//		System.out.println("speriod = " + sPeriod);
+//		System.out.println("dinterest = " + dInterest);
+//		System.out.println("calc = " + calc);
 		
 		System.out.println("Hello, Got a GET request from Osap!");    // task7
 	}
