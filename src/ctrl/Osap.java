@@ -90,6 +90,15 @@ public class Osap extends HttpServlet {
 		request.getRequestDispatcher(target).forward(request, response);
 		
 		
+		// to distinguish between a fresh visit and a submission visit 
+		if (request.getParameter("calculate") == null) {  
+			request.getRequestDispatcher("/UI.jspx").forward(request, response);
+		}
+		else {
+			request.getRequestDispatcher("/Results.jspx").forward(request, response);  
+		}
+		
+		
 		double sPrincipal, sPeriod, dInterest;
 		// input from query String [these are the user input values]
 		if (request.getParameterMap().isEmpty()) {
