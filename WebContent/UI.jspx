@@ -13,7 +13,7 @@
 </head>
 
 <body>
-	<form action="Osap" method="GET" class="osapForm">
+	<form action="Osap" method="POST" class="osapForm">
 		<legend>Osap Calculator</legend>
 		<label for="principal"> Principal <BR /> <small>(total loan amount after studies)</small></label> 
 		<input type="number" step="0.01" id="principal" name="principal"></input> <br/>

@@ -111,6 +111,7 @@ public class Osap extends HttpServlet {
 			 sPrincipal = default_principal;    				//  Double.parseDouble(context.getInitParameter("principal"));	// the default values 
 			 sPeriod = default_period; 							//  Double.parseDouble(context.getInitParameter("period"));
 			 dInterest = fixedInterest + default_interest;		//  Double.parseDouble(context.getInitParameter("interest"));
+			 
 		} else {
 			 sPrincipal = principal;							// the user values
 			 sPeriod = period;
@@ -160,14 +161,14 @@ public class Osap extends HttpServlet {
 		System.out.println("------------------------------------------");
 		System.out.println("Final calc: " + finalCalc);
 		System.out.println("------------------------------------------");
-		
-		System.out.println("Hello, Got a GET request from Osap!");    // task7
+		System.out.println("Content length = " + request.getContentLength() + "\n" + "Content type = " + request.getContentType());
+		System.out.println("Hello, Got a " + cMethod + " request from Osap!");    // task7
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
