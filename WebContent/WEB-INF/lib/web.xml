@@ -38,6 +38,11 @@
 		<param-name>principal</param-name>
 		<param-value>1000</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>fixed interest</param-name>
+		<param-value>5</param-value>
+	</context-param>
 
 	<error-page>
 		<error-code>404</error-code>

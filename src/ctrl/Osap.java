@@ -76,39 +76,43 @@ public class Osap extends HttpServlet {
 		resOut.write("Applicant Name= " + applicant + "\n");
 		
 		// input from web.xml [this are the built-in/hard-coded values]
-//		double principal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));  // this reads the web.xml file and returns the parameter value of the param-name
-//		double interest = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
-//		double period =  Double.parseDouble(this.getServletContext().getInitParameter("period"));
+		double default_principal = Double.parseDouble(this.getServletContext().getInitParameter("principal"));  // this reads the web.xml file and returns the parameter value of the param-name
+		double default_interest = Double.parseDouble(this.getServletContext().getInitParameter("interest"));
+		double default_period =  Double.parseDouble(this.getServletContext().getInitParameter("period"));
 		
-		// task B: servlet retrieving data from the form, [user input the value]
+		// task B: servlet retrieving data from the form, [user input the values]
 		double principal = Double.parseDouble(request.getParameter("principal"));
-		double interest = Double.parseDouble(request.getParameter("interest"));
+		double interest = Double.parseDouble(request.getParameter("interest"));				
 		double period =  Double.parseDouble(request.getParameter("period")); 			// grace period 
 		
-		// this prevents the page to change and go to the lab1 content, instead it delivers the results in the defalut UI page!
-		String target =  "/UI.jspx";
-		request.getRequestDispatcher(target).forward(request, response);
 		
+		// this prevents the page to change and go to the lab1 content, instead it delivers the results in the defalut UI page!
+		String target =  "/UI.jspx";												// this sets the path to UI.jspx instead of Osap.java
+		request.getRequestDispatcher(target).forward(request, response);
 		
 		// to distinguish between a fresh visit and a submission visit 
 		if (request.getParameter("calculate") == null) {  
 			request.getRequestDispatcher("/UI.jspx").forward(request, response);
 		}
 		else {
-			request.getRequestDispatcher("/Results.jspx").forward(request, response);  
+//			request.getRequestDispatcher("/Results.jspx").forward(request, response);  	// uncomment this when u make results.jspx
 		}
 		
 		
 		double sPrincipal, sPeriod, dInterest;
+		double fixedInterest = Double.parseDouble(this.getServletContext().getInitParameter("fixed interest"));;  // fixed interest 
+		double overallInterest = fixedInterest + interest; 
+		
 		// input from query String [these are the user input values]
 		if (request.getParameterMap().isEmpty()) {
-			 sPrincipal = Double.parseDouble(context.getInitParameter("principal"));
-			 sPeriod = Double.parseDouble(context.getInitParameter("period"));
-			 dInterest = Double.parseDouble(context.getInitParameter("interest"));
+			 sPrincipal = default_principal;    				//  Double.parseDouble(context.getInitParameter("principal"));	// the default values 
+			 sPeriod = default_period; 							//  Double.parseDouble(context.getInitParameter("period"));
+			 dInterest = fixedInterest + default_interest;		//  Double.parseDouble(context.getInitParameter("interest"));
+			 
 		} else {
-			 sPrincipal = Double.parseDouble(request.getParameter("principal"));
-			 sPeriod = Double.parseDouble(request.getParameter("period"));
-			 dInterest = Double.parseDouble(request.getParameter("interest"));     
+			 sPrincipal = principal;							// the user values
+			 sPeriod = period;
+			 dInterest = fixedInterest + interest;     			// check this part again 
 		}
 
 //		check this part if its needed 
@@ -135,11 +139,18 @@ public class Osap extends HttpServlet {
 
 		
 //		debugs 
+		System.out.println("default_principal = " + default_principal);
+		System.out.println("default_period =  " + default_period);
+		System.out.println("default_interest =  " + default_interest);
+		
 		System.out.println("principal " + principal);
 		System.out.println("period " + period);
 		System.out.println("interest " + interest);
 		System.out.println("calc: " + calc);
-		System.out.println("target and request = " + target + request);
+		System.out.println("------------------------------------------");
+		System.out.println("target and request = " + request);
+		System.out.println("Fixed interst = " + fixedInterest);
+		System.out.println("Overall interest = " + overallInterest);
 		System.out.println("------------------------------------------");
 //		System.out.println("sprincipal = " + sPrincipal);
 //		System.out.println("speriod = " + sPeriod);
