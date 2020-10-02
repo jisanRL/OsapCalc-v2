@@ -88,15 +88,18 @@ public class Osap extends HttpServlet {
 		double gracePeriod = period;
 		
 		// this prevents the page to change and go to the lab1 content, instead it delivers the results in the defalut UI page!
-		String target =  "/UI.jspx";												// this sets the path to UI.jspx instead of Osap.java
-		request.getRequestDispatcher(target).forward(request, response);
+		String target = "/UI.jspx";												// this sets the path to UI.jspx instead of Osap.java
+//		request.getRequestDispatcher(target).forward(request, response);
 		
-		// to distinguish between a fresh visit and a submission visit 
+		String resultPage = "/Results.jspx";									// task E 		
+//		request.getRequestDispatcher(resultPage).forward(request, response);
+		
+		// task B and E to distinguish between a fresh visit and a submission visit 
 		if (request.getParameter("calculate") == null) {  
 			request.getRequestDispatcher("/UI.jspx").forward(request, response);
 		}
 		else {
-//			request.getRequestDispatcher("/Results.jspx").forward(request, response);  	// uncomment this when u make results.jspx
+			request.getRequestDispatcher("/Results.jspx").forward(request, response);  	// uncomment this when u make results.jspx
 		}
 		
 		
@@ -111,7 +114,6 @@ public class Osap extends HttpServlet {
 			 sPrincipal = default_principal;    				//  Double.parseDouble(context.getInitParameter("principal"));	// the default values 
 			 sPeriod = default_period; 							//  Double.parseDouble(context.getInitParameter("period"));
 			 dInterest = fixedInterest + default_interest;		//  Double.parseDouble(context.getInitParameter("interest"));
-			 
 		} else {
 			 sPrincipal = principal;							// the user values
 			 sPeriod = period;
@@ -134,13 +136,14 @@ public class Osap extends HttpServlet {
 		
 		// the formula for osap calculation 
 		double calc = (((dInterest/100) / 12) * sPrincipal) / (1 - Math.pow(1 + ((dInterest/100) / 12), -sPeriod));
-		double finalCalc = calc + (graceInterest/gracePeriod);
-		resOut.write("Monthly payments: " + calc);
+		double payment = calc + (graceInterest/gracePeriod);
+		resOut.write("Monthly payments: " + payment);
 
 		
 		// task E : save session 
 		HttpSession session = request.getSession();
-
+		request.getSession().setAttribute("GI", "graceInterest");			// task E: how do you get the data from servlet into the results page
+		request.getSession().setAttribute("PAY", "payment");
 		
 //		debugs 
 		System.out.println("default_principal = " + default_principal);
@@ -159,7 +162,7 @@ public class Osap extends HttpServlet {
 		System.out.println("Fixed interst = " + fixedInterest);
 		System.out.println("Overall interest = " + overallInterest);
 		System.out.println("------------------------------------------");
-		System.out.println("Final calc: " + finalCalc);
+		System.out.println("Final calc: " + payment);
 		System.out.println("------------------------------------------");
 		System.out.println("Content length = " + request.getContentLength() + "\n" + "Content type = " + request.getContentType());
 		System.out.println("Hello, Got a " + cMethod + " request from Osap!");    // task7
