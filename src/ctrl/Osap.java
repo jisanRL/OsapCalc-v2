@@ -100,9 +100,9 @@ public class Osap extends HttpServlet {
 			 sPeriod = default_period; 							
 			 dInterest = default_interest;		
 		} else {
-			 sPrincipal = principal;							// the user values
+			 sPrincipal = principal;					// the user values
 			 sPeriod = period;
-			 dInterest = interest;     			// check this part again 
+			 dInterest = interest;     					// check this part again 
 		}
 
 //		check this part if its needed 
@@ -142,15 +142,19 @@ public class Osap extends HttpServlet {
 		String resultPage = "/Results.jspx";
 
 		// task B and E to distinguish between a fresh visit and a submission visit
-		if (request.getParameter("calculate") == null && request.getParameter("calculate").equals("true")) {
-			request.getRequestDispatcher("/UI.jspx").forward(request, response);
+		if (request.getParameter("calculate") == null) {
+			if (request.getParameter("restart") == null) {
+				request.getRequestDispatcher("/UI.jspx").forward(request, response);
+			}
+			
 		} else {
 			request.getRequestDispatcher("/Results.jspx").forward(request, response); 
-		}
+		} 
 		
-//		re-compute button 						[check this]
+		
+////		re-compute button 						[check this]
 //		String restart = request.getParameter("restart");
-//		if (restart == null) {
+//		if (restart != null) {
 //			request.getRequestDispatcher("/UI.jspx").forward(request, response);
 //		} else {
 //			request.getRequestDispatcher("/Results.jspx").forward(request, response); 
@@ -178,6 +182,7 @@ public class Osap extends HttpServlet {
 		System.out.println("Final calc: " + payment);
 		System.out.println("------------------------------------------");
 		System.out.println("Content length = " + request.getContentLength() + "\n" + "Content type = " + request.getContentType());
+//		System.out.println("Restart; " + restart);
 		System.out.println("Hello, Got a " + cMethod + " request from Osap!");    // task7
 	}
 

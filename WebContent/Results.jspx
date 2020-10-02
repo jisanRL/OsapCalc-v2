@@ -21,7 +21,7 @@
 		<strong>Grace Period Interest: </strong> ${GI} <br/> <br/>
 		<strong>Monthly payments: </strong> ${PAY}<br/> <br />
 		<LABEL>Calculations are based on a fixed rate based on prime Rate + 5%</LABEL><BR /> <BR />
-		<button action="restart" name="restart" value="true">Re-compute</button> 
+		<button action="Osap" name="restart" value="true" type="button" onclick="location.href/UI.jspx"> Re-compute</button> 
 	</form>
 </body>
 </html>
