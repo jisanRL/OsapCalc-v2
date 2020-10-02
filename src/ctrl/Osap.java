@@ -93,9 +93,7 @@ public class Osap extends HttpServlet {
 		
 		double interest = fixedInterest + userInterest;
 		double graceInterest = principal * ((interest / 100)/12) * gracePeriod;
-		
-//		double graceInterest = (principal * ((interest + fixedInterest) / 12) * gracePeriod);				// check this out 
-		
+				
 		// input from query String [these are the user input values]
 		if (request.getParameterMap().isEmpty()) {
 			 sPrincipal = default_principal;    		// the default values 
@@ -129,23 +127,19 @@ public class Osap extends HttpServlet {
 		} else {
 			payment = calc;
 		}
-		
 		resOut.write("Monthly payments: " + payment);
-
 		
 		// task E : save session, how do you get the data from servlet into the results page
 		HttpSession session = request.getSession();
 		request.getServletContext().setAttribute("GI", graceInterest);
 		request.getServletContext().setAttribute("PAY", payment);
-//		request.getServletContext().setAttribute("label", payment);
+		
 		
 		request.getSession().setAttribute("GI", graceInterest);			
 		request.getSession().setAttribute("PAY", payment);
 
-	
 		String target = "/UI.jspx"; 				// this sets the path to UI.jspx instead of Osap.java
 		String resultPage = "/Results.jspx";
-
 
 		// task B and E to distinguish between a fresh visit and a submission visit
 		if (request.getParameter("calculate") == null && request.getParameter("calculate").equals("true")) {
@@ -153,6 +147,14 @@ public class Osap extends HttpServlet {
 		} else {
 			request.getRequestDispatcher("/Results.jspx").forward(request, response); 
 		}
+		
+//		re-compute button 						[check this]
+//		String restart = request.getParameter("restart");
+//		if (restart == null) {
+//			request.getRequestDispatcher("/UI.jspx").forward(request, response);
+//		} else {
+//			request.getRequestDispatcher("/Results.jspx").forward(request, response); 
+//		}
 		
 		
 		
