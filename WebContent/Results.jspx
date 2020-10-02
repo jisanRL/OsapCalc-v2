@@ -18,8 +18,8 @@
 <body>
 	<form action="" method="POST">
 		<legend>Osap Calculator</legend>
-		<strong>Grace Period Interest: </strong> ${graceInterest}<br/> 
-		<strong>Monthly payments: </strong> ${payment}<br/> 
+		<strong>Grace Period Interest: </strong> ${GI} <br/> <br/>
+		<strong>Monthly payments: </strong> ${PAY}<br/> <br />
 	
 		<button action="Osap" name="restart" value="true">Re-compute</button> 
 	</form>
