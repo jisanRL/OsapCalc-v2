@@ -90,10 +90,15 @@ public class Osap extends HttpServlet {
 		double sPrincipal, sPeriod, dInterest, grace;
 		double fixedInterest = Double.parseDouble(this.getServletContext().getInitParameter("fixed interest"));  // fixed interest 
 		double gracePeriod = Double.parseDouble(this.getServletContext().getInitParameter("grace period"));
+		double graceInterest;
 		
 		double interest = fixedInterest + userInterest;
-		double graceInterest = principal * ((interest / 100)/12) * gracePeriod;
-				
+		if (request.getParameter("inputGrace") == null) {
+			graceInterest = 0;
+		} else {
+			graceInterest = principal * ((interest / 100)/12) * gracePeriod;
+		}
+		
 		// input from query String [these are the user input values]
 		if (request.getParameterMap().isEmpty()) {
 			 sPrincipal = default_principal;    		// the default values 
@@ -122,6 +127,7 @@ public class Osap extends HttpServlet {
 		// the formula for osap calculation 
 		double payment; 
 		double calc = (((interest/100) / 12) * principal) / (1 - Math.pow(1 + ((interest/100) / 12), -sPeriod));
+	
 		if (request.getParameter("inputGrace") != null ) {
 			payment = calc + (graceInterest/gracePeriod);
 		} else {
@@ -142,23 +148,12 @@ public class Osap extends HttpServlet {
 		String resultPage = "/Results.jspx";
 
 		// task B and E to distinguish between a fresh visit and a submission visit
-		if (request.getParameter("calculate") == null) {
-			if (request.getParameter("restart") == null) {
-				request.getRequestDispatcher("/UI.jspx").forward(request, response);
-			}
+		if (request.getParameter("calculate") == null || (request.getParameter("restart") != null && request.getParameter("restart").equals("true"))) {
+			request.getRequestDispatcher("/UI.jspx").forward(request, response);
 			
 		} else {
 			request.getRequestDispatcher("/Results.jspx").forward(request, response); 
 		} 
-		
-		
-////		re-compute button 						[check this]
-//		String restart = request.getParameter("restart");
-//		if (restart != null) {
-//			request.getRequestDispatcher("/UI.jspx").forward(request, response);
-//		} else {
-//			request.getRequestDispatcher("/Results.jspx").forward(request, response); 
-//		}
 		
 		
 		
